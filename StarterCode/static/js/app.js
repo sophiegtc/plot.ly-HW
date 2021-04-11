@@ -33,6 +33,8 @@ var sample_values = unpack(data.samples, 'sample_values');
 var otu_ids = unpack(data.samples, 'otu_ids');
 var otu_labels= unpack(data.samples, 'otu_labels');
 
+//console.log(metadata[0])
+
 
 // Display the default plot
 function init() {
@@ -48,11 +50,34 @@ function init() {
   //console.log( otu_ids[0])
   //console.log( otu_labels[0])
   
-  var layout = {
-     title: "'Bar' Chart"
-  };  
   
-  Plotly.newPlot("bar", initdata, layout);
+  Plotly.newPlot("bar", initdata);
+
+  var trace2 = {
+    x: otu_ids[0],
+    y: sample_values[0],
+    mode: 'markers',
+    marker: {
+      color: otu_ids[0],
+      size: sample_values[0]
+    }
+  };
+  var bubbledata = [trace2];
+
+  var layout = {
+    title: "bubble chart",
+    xaxis: { title: "OTU ID" },
+  }
+  Plotly.newPlot("bubble", bubbledata, layout);
+  
+  
+  $('#sample-metadata').append('id: ' + data.metadata[0]["id"] + '</br>' + 
+        'ethnicity: ' + data.metadata[0]["ethnicity"] + '</br>' + 
+        'gender: ' + data.metadata[0]["gender"] + '</br>' + 
+        'age: ' + data.metadata[0]["age"] + '</br>' + 
+        'location: ' + data.metadata[0]["location"] + '</br>' + 
+        'bbtype: ' + data.metadata[0]["bbtype"] + '</br>' + 
+        'wfreq: ' + data.metadata[0]["wfreq"]);
 }
 
 
@@ -80,6 +105,14 @@ function getData() {
   // Update the restyled plot's values
   Plotly.restyle("bar", "x", [sample_values[dataset].slice(0, 10).reverse()]);
   Plotly.restyle("bar", "y", [otu_ids[dataset].slice(0, 10).map(int2label).reverse()]);
+  
+  var update = {
+    'marker.color': [otu_ids[dataset]],
+    'marker.size': [sample_values[dataset]]
+  };
+  Plotly.restyle("bubble", "x", [otu_ids[dataset]]);
+  Plotly.restyle("bubble", "y", [sample_values[dataset]]);
+  Plotly.restyle("bubble", update);
 
   //Display each key-value pair from the metadata JSON object
   $('#sample-metadata').text("");
@@ -90,12 +123,11 @@ function getData() {
         'location: ' + data.metadata[dataset]["location"] + '</br>' + 
         'bbtype: ' + data.metadata[dataset]["bbtype"] + '</br>' + 
         'wfreq: ' + data.metadata[dataset]["wfreq"]);
+  
+
+  
+
 };
-
-
-
-
-
 init();
 
 });
