@@ -132,6 +132,43 @@ init();
 
 });
 
+// We want our chart to take up 50% of the circle
+// Divide the 50% into 9 equal segments
+
+var gaugedata = [
+  {
+    type: "indicator",
+    mode: "gauge+needle",
+    gauge: {
+      axis: { range: [null, 540], tickwidth: 1, tickcolor: "darkblue" },
+      bgcolor: "white",
+      borderwidth: 2,
+      bordercolor: "gray",
+      steps: [
+        { range: [0, 60], color: "navy" },
+        { range: [60, 120], color: "blue" },
+        { range: [120, 180], color: "steelblue" },
+        { range: [180, 240], color: "maroon" },
+        { range: [240, 300], color: "sandybrown" },
+        { range: [300, 360], color: "wheat" },
+        { range: [360, 420], color: "lightyellow" },
+        { range: [420, 480], color: "indigo" },
+        { range: [480, 540], color: "blueviolet" }
+      ],
+     
+    }
+  }
+];
+
+var layout = {
+  width: 500,
+  height: 400,
+  margin: { t: 25, r: 25, l: 25, b: 25 },
+  paper_bgcolor: "lavender",
+  font: { color: "darkblue", family: "Arial" }
+};
+
+Plotly.newPlot('gauge', gaugedata, layout);
   
     
     
